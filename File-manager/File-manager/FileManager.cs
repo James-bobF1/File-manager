@@ -1,8 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace File_manager
 {
@@ -17,7 +14,7 @@ namespace File_manager
             {
                 throw new NotImplementedException();
             }
-            else if(args[0].Length==0)
+            else if(args.Length==0||args[0].Length==0)
             {
                 LoadSettings(defaultpath);
             }
@@ -29,6 +26,7 @@ namespace File_manager
 
         void LoadSettings(string path)
         {
+            consoleFileManagerForm = new ConsoleFileManagerForm();
             string[] settings=new string[100];
             try
             {
@@ -42,7 +40,7 @@ namespace File_manager
                 }
                 consoleFileManagerForm.currentPath = settings[0].Substring(0, settings[0].LastIndexOf('/'));
                 consoleFileManagerForm.countOfElementsByPage = int.Parse(settings[1].Substring(0, settings[1].LastIndexOf('/')));
-                consoleFileManagerForm.activeWindow = ActiveWindow.DirectoryTree;
+                consoleFileManagerForm.activeWindow = ActiveWindow.Console;
             }
             catch
             {
@@ -57,58 +55,61 @@ namespace File_manager
                     }
                 }
                 consoleFileManagerForm.countOfElementsByPage = 50;
+                consoleFileManagerForm.activeWindow = ActiveWindow.Console;
             }
 
         }
 
-        internal void ParseUserAction()
+        public void Run()
+        {
+            consoleFileManagerForm.PrintForm();
+            while (true)
+            {
+                if (Console.KeyAvailable)
+                {
+                    ParseUserAction();
+                    consoleFileManagerForm.PrintForm();
+                }
+            }
+        }
+
+        void ParseUserAction()
         {
             ConsoleKey key = Console.ReadKey().Key;
-            switch (consoleFileManagerForm.activeWindow)
+            switch (key)
             {
-                case ActiveWindow.Console:
-                    break;
-                case ActiveWindow.DirectoryTree:
-                case ActiveWindow.FilesInfo:
-                    switch (key)
+                case ConsoleKey.Tab:
                     {
-                        case ConsoleKey.Tab:
-                            if (consoleFileManagerForm.activeWindow++ == ActiveWindow.MessageBox)
-                            {
-                                consoleFileManagerForm.activeWindow = ActiveWindow.Console;
-                            }
-                            break;
-                        case ConsoleKey.Enter:
-                            break;
-                        case ConsoleKey.Spacebar:
-                            break;
-                        case ConsoleKey.PageUp:
-                            break;
-                        case ConsoleKey.PageDown:
-                            break;
-                        case ConsoleKey.End:
-                            break;
-                        case ConsoleKey.Home:
-                            break;
-                        case ConsoleKey.LeftArrow:
-                            break;
-                        case ConsoleKey.UpArrow:
-                            break;
-                        case ConsoleKey.RightArrow:
-                            break;
-                        case ConsoleKey.DownArrow:
-                            break;
-                        case ConsoleKey.F3:
-                            break;
-                        default:
-                            break;
+                        if (consoleFileManagerForm.activeWindow == ActiveWindow.DirectoryTree)
+                        {
+                            consoleFileManagerForm.activeWindow = ActiveWindow.Console;
+                        }
+                        else
+                        {
+                            consoleFileManagerForm.activeWindow = ActiveWindow.DirectoryTree;
+                        }
+                        break;
                     }
-                    break;
-                case ActiveWindow.MessageBox:
-                    //Form
-                    break;
-                default:
-                    break;
+                case ConsoleKey.Backspace:
+                    {
+
+                        break;
+                    }
+                case ConsoleKey.Enter:
+                    {
+
+                        break;
+                    }
+                case ConsoleKey.UpArrow:
+                    {
+
+                        break;
+                    }
+                case ConsoleKey.DownArrow:
+                    {
+
+                        break;
+                    }
             }
         }
     }

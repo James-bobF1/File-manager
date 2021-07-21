@@ -4,7 +4,6 @@
     {
         Console,
         DirectoryTree,
-        FilesInfo,
-        MessageBox
+        FilesInfo
     }
 }

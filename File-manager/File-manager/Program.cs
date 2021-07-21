@@ -9,13 +9,11 @@ namespace File_manager
             try
             {
                 FileManager fileManager = new FileManager(args);
-                while (true)
-                {
-                    if (Console.KeyAvailable)
-                    {
-                        fileManager.ParseUserAction();
-                    }
-                }
+                fileManager.Run();
+            }
+            catch(NotImplementedException ex)
+            {
+                Console.WriteLine("Не поддерживаемый формат вызова. Необходимо передать путь к файлу настроек, либо оставить пустым для загрузки настроек по умолчанию.");
             }
             //
             // Сводка:
